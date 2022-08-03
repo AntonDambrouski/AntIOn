@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # IdentityServer secret files
 IdentityServer/keys
+*tempkey.jwk

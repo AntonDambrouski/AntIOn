@@ -1,16 +1,22 @@
-﻿using IdentityServer;
+using IdentityServer;
 
-try
-{
-    var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-    var app = builder
-        .ConfigureServices()
-        .ConfigurePipeline();
-    
-    app.Run();
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-}
+builder.Services.AddIdentityServer()
+    .AddInMemoryIdentityResources(Configs.GetIdentityResources())
+    .AddInMemoryClients(Configs.GetClients())
+    .AddTestUsers(TestUsers.Users)
+    .AddDeveloperSigningCredential();
+
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+app.UseRouting();
+
+app.UseIdentityServer();
+app.UseAuthorization();
+
+app.MapDefaultControllerRoute();
+
+app.Run();
