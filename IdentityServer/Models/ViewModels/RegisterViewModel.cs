@@ -2,6 +2,6 @@
 {
     public class RegisterViewModel : RegisterViewInput
     {
-        public IEnumerable<string>? Errors { get; set; }
+        public IEnumerable<ViewError>? Errors { get; set; }
     }
 }

@@ -12,6 +12,14 @@
         <div class="col col-lg-2"></div>
         <div class="col-md-auto">
             <h3 class="text-muted mb-3">Login</h3>
+            @if (Model.Errors is not null && Model.Errors.Any())
+            {
+                @foreach (var error in Model.Errors)
+                {
+                    <div class="alert alert-danger" role="alert"><strong>@error.Name:</strong> @error.Message</div>
+                }
+            }
+
             <form asp-controller="Account" asp-action="Login" method="post">
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="form-group mb-2">
@@ -19,12 +27,14 @@
                         Name:
                     </label>
                     <input type="text" id="name" class="form-control" placeholder="Name..." asp-for="Name">
+                    <span class="form-text d-block" asp-validation-for="Name"></span>
                 </div>
                 <div class="form-group mb-2">
                     <label for="password" class="form-label">
                         Password:
                     </label>
                     <input type="password" id="password" class="form-control" placeholder="Password..." asp-for="Password">
+                    <span class="form-text d-block" asp-validation-for="Password"></span>
 
                 </div>
                 <div class="form-group mb-2">

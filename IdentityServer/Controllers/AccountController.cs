@@ -25,11 +25,23 @@ namespace IdentityServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
             var result = await _signInManager.PasswordSignInAsync(vm.Name, vm.Password, vm.RememberMe, false);
             if (result.Succeeded)
             {
                 return Redirect(vm.ReturnUrl);
             }
+
+            vm.Errors = new[] {
+                new ViewError
+                {
+                    Name = "Login error", Message = "Login or password is incorrect!"
+                }
+            };
 
             return View(vm);
         }
@@ -56,7 +68,12 @@ namespace IdentityServer.Controllers
                 return Redirect(vm.ReturnUrl);
             }
 
-            vm.Errors = result.Errors.Select(e => e.Description);
+            vm.Errors = result.Errors.Select(e => new ViewError
+            {
+                Message = e.Description,
+                Name = "Register error"
+            });
+
             return View(vm);
         }
     }
