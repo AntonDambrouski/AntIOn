@@ -1,0 +1,39 @@
+﻿@using IdentityServer.Models.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-2"></div>
+        <div class="col-md-auto">
+            <h3 class="text-muted mb-3">Login</h3>
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="form-group mb-2">
+                    <label for="name" class="form-label">
+                        Name:
+                    </label>
+                    <input type="text" id="name" class="form-control" placeholder="Name..." asp-for="Name">
+                </div>
+                <div class="form-group mb-2">
+                    <label for="password" class="form-label">
+                        Password:
+                    </label>
+                    <input type="password" id="password" class="form-control" placeholder="Password..." asp-for="Password">
+
+                </div>
+                <div class="form-group mb-2">
+                    <label for="rememberMe" class="form-label"> Remember me</label>
+                    <input type="checkbox" id="rememberMe" class="form-check-input" asp-for="RememberMe">
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col col-lg-2"></div>
+    </div>
+</div>
