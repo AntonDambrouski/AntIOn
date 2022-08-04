@@ -31,7 +31,12 @@
                     <label for="rememberMe" class="form-label"> Remember me</label>
                     <input type="checkbox" id="rememberMe" class="form-check-input" asp-for="RememberMe">
                 </div>
-                <button type="submit" class="btn btn-outline-primary">Submit</button>
+                <div class="mb-1">
+                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                </div>
+                <div>
+                    <a class="link-dark" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Go to Registration</a>
+                </div>
             </form>
         </div>
         <div class="col col-lg-2"></div>
