@@ -2,6 +2,7 @@
 using IdentityServer.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace IdentityServer.Controllers
 {
@@ -36,11 +37,9 @@ namespace IdentityServer.Controllers
                 return Redirect(vm.ReturnUrl);
             }
 
-            vm.Errors = new[] {
-                new ViewError
-                {
-                    Name = "Login error", Message = "Login or password is incorrect!"
-                }
+            vm.Errors = new[]
+            {
+                new ViewError("Login error", "Login or password is incorrect!")
             };
 
             return View(vm);
@@ -68,13 +67,78 @@ namespace IdentityServer.Controllers
                 return Redirect(vm.ReturnUrl);
             }
 
-            vm.Errors = result.Errors.Select(e => new ViewError
-            {
-                Message = e.Description,
-                Name = "Register error"
-            });
-
+            vm.Errors = result.Errors.Select(e => new ViewError("Register error", e.Description));
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var action = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+            var props = _signInManager.ConfigureExternalAuthenticationProperties(provider, action);
+            return Challenge(props, provider);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info is null)
+            {
+                return RedirectToAction(nameof(Login), new { returnUrl });
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (result.Succeeded)
+            {
+                return Redirect(returnUrl);
+            }
+
+            var name = info.Principal.FindFirst(ClaimTypes.Name)?.Value;
+            var vm = new ExternalLoginModel
+            {
+                Name = name,
+                ReturnUrl = returnUrl
+            };
+
+            return View("ExternalLoginConfirmation", vm);
+        }
+
+        public async Task<IActionResult> ExternalRegister(ExternalLoginModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ExternalLoginConfirmation", vm);
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info is null)
+            {
+                return RedirectToAction(nameof(Login), new { vm.ReturnUrl });
+            }
+
+            var user = await _userManager.FindByNameAsync(vm.Name);
+            if (user is null)
+            {
+                user = new() { UserName = vm.Name };
+                user.Email = info.Principal.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
+                user.PhoneNumber = info.Principal.FindFirst(ClaimTypes.MobilePhone)?.Value ?? string.Empty;
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    vm.Errors = createResult.Errors.Select(e => new ViewError("Register error", e.Description));
+                    return View("ExternalLoginConfirmation", vm);
+                }
+            }
+
+            var result = await _userManager.AddLoginAsync(user, info);
+            if (!result.Succeeded)
+            {
+                vm.Errors = result.Errors.Select(e => new ViewError("Register error", e.Description));
+                return View("ExternalLoginConfirmation", vm);
+            }
+
+            await _signInManager.SignInAsync(user, false);
+            return Redirect(vm.ReturnUrl);
         }
     }
 }

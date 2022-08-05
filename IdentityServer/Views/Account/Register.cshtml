@@ -1,16 +1,13 @@
-﻿@using IdentityServer.Models.ViewModels
-@model RegisterViewModel
+﻿@model RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <div class="container">
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-2"></div>
-        <div class="col-md-auto">
+    <div class="row">
+        <div class="col-md">
             <h3 class="text-muted mb-3">Register</h3>
             @if (Model.Errors is not null && Model.Errors.Any())
             {
@@ -44,7 +41,7 @@
                     <span class="form-text d-block" asp-validation-for="ConfirmPassword"></span>
                 </div>
                 <div class="mb-1">
-                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    <button type="submit" class="btn btn-outline-primary">Register</button>
                 </div>
                 <div>
                     <a class="link-dark" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">Go to Login</a>
@@ -52,6 +49,8 @@
 
             </form>
         </div>
-        <div class="col col-lg-2"></div>
+        <div class="col-md">
+            @await Html.PartialAsync("_ExternalAuthentication", @Model.ReturnUrl)
+        </div>
     </div>
 </div>
