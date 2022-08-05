@@ -1,5 +1,4 @@
-﻿@using IdentityServer.Models.ViewModels
-@model LoginViewModel
+﻿@model LoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -7,10 +6,9 @@
 }
 
 
-<div class="container">
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-2"></div>
-        <div class="col-md-auto">
+<div class="container-sm">
+    <div class="row">
+        <div class="col-md">
             <h3 class="text-muted mb-3">Login</h3>
             @if (Model.Errors is not null && Model.Errors.Any())
             {
@@ -19,7 +17,6 @@
                     <div class="alert alert-danger" role="alert"><strong>@error.Name:</strong> @error.Message</div>
                 }
             }
-
             <form asp-controller="Account" asp-action="Login" method="post">
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="form-group mb-2">
@@ -42,13 +39,15 @@
                     <input type="checkbox" id="rememberMe" class="form-check-input" asp-for="RememberMe">
                 </div>
                 <div class="mb-1">
-                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    <button type="submit" class="btn btn-outline-primary">Login</button>
                 </div>
                 <div>
                     <a class="link-dark" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Go to Registration</a>
                 </div>
             </form>
         </div>
-        <div class="col col-lg-2"></div>
+        <div class="col-md">
+            @await Html.PartialAsync("_ExternalAuthentication", @Model.ReturnUrl)
+        </div>
     </div>
 </div>

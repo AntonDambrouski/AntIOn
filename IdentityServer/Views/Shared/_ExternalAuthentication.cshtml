@@ -1,0 +1,27 @@
+﻿@using IdentityServer.Models
+
+@inject SignInManager<AppUser> _signInManager;
+@model string
+<section class="container-sm">
+        <h3 class="mb-3">Continue with</h3>
+        @{
+            var providers = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            if (!providers.Any())
+            {
+                <div class="alert alert-info">We don't have any external providers</div>
+            }
+            else
+            {
+                foreach (var provider in providers)
+                {
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model" method="post">
+                        <div class="row">
+                            <div class="col-sm">
+                                <button class="btn btn-dark" type="submit" name="provider" value="@provider.Name">@provider.Name</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+        }
+</section>
