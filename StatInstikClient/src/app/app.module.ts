@@ -1,23 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthComponent } from './auth/auth.component';
-import { AuthConfigModule } from './auth/auth-config.module';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    RouterModule,
-    FormsModule,
-    HttpClientModule,
-    AuthConfigModule,
+    AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

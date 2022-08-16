@@ -404,5 +404,4 @@ IdentityServer/keys
 #wwwroot libs
 */wwwroot/lib/*
 
-#Visual studio configs
-*launchsettings.json
+
