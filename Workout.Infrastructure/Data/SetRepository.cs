@@ -16,6 +16,7 @@ public class SetRepository : ISetRepository
         _client = clientFactory.CreateClient();
         FirebaseBaseAddress = Environment.GetEnvironmentVariable("FirebaseBaseAddress");
     }
+
     public async Task CreateAsync(Set item)
     {
         var content = JsonContent.Create(item);

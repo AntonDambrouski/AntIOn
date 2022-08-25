@@ -16,6 +16,7 @@ public class StepRepository : IStepRepository
         _client = clientFactory.CreateClient();
         FirebaseBaseAddress = Environment.GetEnvironmentVariable("FirebaseBaseAddress");
     }
+
     public async Task CreateAsync(Step item)
     {
         var content = JsonContent.Create(item);

@@ -16,6 +16,7 @@ public class TrainingRepository : ITrainingRepository
         _client = clientFactory.CreateClient();
         FirebaseBaseAddress = Environment.GetEnvironmentVariable("FirebaseBaseAddress");
     }
+
     public async Task CreateAsync(Training item)
     {
         var content = JsonContent.Create(item);

@@ -16,6 +16,7 @@ public class FitnessGoalRepository : IFitnessGoalRepository
         _client = clientFactory.CreateClient();
         FirebaseBaseAddress = Environment.GetEnvironmentVariable("FirebaseBaseAddress");
     }
+
     public async Task CreateAsync(FitnessGoal item)
     {
         var content = JsonContent.Create(item);

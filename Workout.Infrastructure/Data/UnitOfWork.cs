@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     {
         _clientFactory = clientFactory;
     }
+
     public ISetRepository SetRepository => SetRepository ?? new SetRepository(_clientFactory);
 
     public IStepRepository StepRepository => StepRepository ?? new StepRepository(_clientFactory);
