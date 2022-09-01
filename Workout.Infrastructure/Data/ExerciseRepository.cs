@@ -20,7 +20,7 @@ public class ExerciseRepository : IExerciseRepository
     public async Task CreateAsync(Exercise item)
     {
         var content = JsonContent.Create(item);
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercise}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{item.Id}.json";
         var response = await _client.PutAsync(requestUrl, content);
         if (!response.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ public class ExerciseRepository : IExerciseRepository
 
     public async Task DeleteAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercise}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{id}.json";
         var response = await _client.DeleteAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -40,7 +40,7 @@ public class ExerciseRepository : IExerciseRepository
 
     public async Task<IEnumerable<Exercise>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercise}.json";
+        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -53,7 +53,7 @@ public class ExerciseRepository : IExerciseRepository
 
     public async Task<Exercise?> GetByIdAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercise}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -66,7 +66,7 @@ public class ExerciseRepository : IExerciseRepository
 
     public async Task UpdateAsync(Exercise item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercise}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{item.Id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
