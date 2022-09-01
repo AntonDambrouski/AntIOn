@@ -1,8 +1,9 @@
 ﻿using Workout.Core.Enums;
+using Workout.Core.Models;
 
-namespace Workout.Core.Models;
+namespace Workout.Api.ApiModels.SetDTOs;
 
-public class Set
+public class SetDetailedDTO
 {
     public int Id { get; set; }
     public string Name { get; set; }
