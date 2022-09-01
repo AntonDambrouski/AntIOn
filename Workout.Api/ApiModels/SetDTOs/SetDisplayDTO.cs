@@ -1,4 +1,4 @@
-﻿namespace Workout.Api.ApiModels;
+﻿namespace Workout.Api.ApiModels.SetDTOs;
 
 public class SetDisplayDTO
 {

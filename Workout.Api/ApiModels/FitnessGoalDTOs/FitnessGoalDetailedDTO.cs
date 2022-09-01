@@ -1,8 +1,8 @@
 ﻿using Workout.Core.Models;
 
-namespace Workout.Api.ApiModels;
+namespace Workout.Api.ApiModels.FitnessGoalDTOs;
 
-public class FitnessGoalUpdateDTO
+public class FitnessGoalDetailedDTO
 {
     public int Id { get; set; }
     public string Name { get; set; }

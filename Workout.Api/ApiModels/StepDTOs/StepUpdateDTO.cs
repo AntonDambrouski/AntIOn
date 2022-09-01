@@ -1,6 +1,6 @@
-﻿namespace Workout.Core.Models;
+﻿namespace Workout.Api.ApiModels.StepDTOs;
 
-public class Step
+public class StepUpdateDTO
 {
     public int Id { get; set; }
     public string Name { get; set; }

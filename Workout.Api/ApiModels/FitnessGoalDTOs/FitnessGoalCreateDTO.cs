@@ -1,6 +1,6 @@
 ﻿using Workout.Core.Models;
 
-namespace Workout.Api.ApiModels;
+namespace Workout.Api.ApiModels.FitnessGoalDTOs;
 
 public class FitnessGoalCreateDTO
 {
