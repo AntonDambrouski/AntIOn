@@ -2,15 +2,14 @@
 using Workout.Api.ApiModels.TrainingDTOs;
 using Workout.Core.Models;
 
-namespace Workout.Api.AutoMapper
+namespace Workout.Api.AutoMapper;
+
+public class TrainingProfile : Profile
 {
-    public class TrainingProfile : Profile
+    public TrainingProfile()
     {
-        public TrainingProfile()
-        {
-            CreateMap<Training, TrainingDisplayDTO>();
-            CreateMap<Training, TrainingDetailedDTO>();
-            CreateMap<TrainingCreateDTO, Training>();
-        }
+        CreateMap<Training, TrainingDisplayDTO>();
+        CreateMap<Training, TrainingDetailedDTO>();
+        CreateMap<TrainingCreateDTO, Training>();
     }
 }
