@@ -19,7 +19,7 @@ public class SetRepository : ISetRepository
 
     public async Task CreateAsync(Set item)
     {
-        var content = JsonContent.Create(item);
+        var content = JsonContent.Create(item, item.GetType());
         var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Sets}/{item.Id}.json";
         var response = await _client.PutAsync(requestUrl, content);
         if (!response.IsSuccessStatusCode)
