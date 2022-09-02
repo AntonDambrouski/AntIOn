@@ -1,9 +1,14 @@
-﻿namespace Workout.Core.Models;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace Workout.Core.Models;
 
 public class Step
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public string IsCompleted { get; set; }
+    public bool IsCompleted { get; set; }
 }

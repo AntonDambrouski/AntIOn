@@ -20,7 +20,7 @@ public class TrainingRepository : ITrainingRepository
     public async Task CreateAsync(Training item)
     {
         var content = JsonContent.Create(item);
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Trainings}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Trainings}/{item.Id}.json";
         var response = await _client.PutAsync(requestUrl, content);
         if (!response.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ public class TrainingRepository : ITrainingRepository
 
     public async Task DeleteAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Trainings}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Trainings}/{id}.json";
         var response = await _client.DeleteAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -40,7 +40,7 @@ public class TrainingRepository : ITrainingRepository
 
     public async Task<IEnumerable<Training>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Trainings}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Trainings}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -53,7 +53,7 @@ public class TrainingRepository : ITrainingRepository
 
     public async Task<Training?> GetByIdAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Trainings}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Trainings}/{id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -66,7 +66,7 @@ public class TrainingRepository : ITrainingRepository
 
     public async Task UpdateAsync(Training item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Trainings}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Trainings}/{item.Id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {

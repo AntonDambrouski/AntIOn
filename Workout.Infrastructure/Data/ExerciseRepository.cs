@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Driver;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
 using Workout.Core.Constants;
 using Workout.Core.Interfaces.Repositories;
@@ -8,69 +9,38 @@ namespace Workout.Infrastructure.Data;
 
 public class ExerciseRepository : IExerciseRepository
 {
-    private readonly string? FirebaseBaseAddress;
-    private readonly HttpClient _client;
+    private readonly IMongoCollection<Exercise> _exercisesCollection;
 
-    public ExerciseRepository(IHttpClientFactory clientFactory)
+    public ExerciseRepository()
     {
-        _client = clientFactory.CreateClient();
-        FirebaseBaseAddress = Environment.GetEnvironmentVariable("FirebaseBaseAddress");
+        var connectionString = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.MongoDbConnectionString);
+        var client = new MongoClient(connectionString);
+        var mongoDatabase = client.GetDatabase(MongoDbNames.WorkoutDataBase);
+        _exercisesCollection = mongoDatabase.GetCollection<Exercise>(MongoDbNames.ExercisesCollection);
     }
 
     public async Task CreateAsync(Exercise item)
     {
-        var content = JsonContent.Create(item);
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{item.Id}.json";
-        var response = await _client.PutAsync(requestUrl, content);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
+        await _exercisesCollection.InsertOneAsync(item);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(string id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{id}.json";
-        var response = await _client.DeleteAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
+        await _exercisesCollection.DeleteOneAsync(ex => ex.Id == id);
     }
 
     public async Task<IEnumerable<Exercise>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}.json";
-        var response = await _client.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
-
-        var exercisesJson = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<Dictionary<string, Exercise>>(exercisesJson)?.Values;
+        return await _exercisesCollection.Find(_ => true).ToListAsync();
     }
 
-    public async Task<Exercise?> GetByIdAsync(int id)
+    public async Task<Exercise?> GetByIdAsync(string id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{id}.json";
-        var response = await _client.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
-
-        var exerciseJson = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<Exercise?>(exerciseJson);
+        return await _exercisesCollection.Find(ex => ex.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task UpdateAsync(Exercise item)
+    public async Task UpdateAsync(string id, Exercise item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Exercises}/{item.Id}.json";
-        var response = await _client.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
+        await _exercisesCollection.ReplaceOneAsync(ex => ex.Id == id, item);
     }
 }

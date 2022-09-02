@@ -4,7 +4,7 @@ namespace Workout.Api.ApiModels.FitnessGoalDTOs;
 
 public class FitnessGoalDetailedDTO
 {
-    public int Id { get; set; }
+    public string? Id { get; set; }
     public string Name { get; set; }
     public Set TargetSet { get; set; }
     public IEnumerable<Step> Steps { get; set; }

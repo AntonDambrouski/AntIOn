@@ -20,7 +20,7 @@ public class FitnessGoalRepository : IFitnessGoalRepository
     public async Task CreateAsync(FitnessGoal item)
     {
         var content = JsonContent.Create(item);
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.FitnessGoals}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{item.Id}.json";
         var response = await _client.PutAsync(requestUrl, content);
         if (!response.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ public class FitnessGoalRepository : IFitnessGoalRepository
 
     public async Task DeleteAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.FitnessGoals}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{id}.json";
         var response = await _client.DeleteAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -40,7 +40,7 @@ public class FitnessGoalRepository : IFitnessGoalRepository
 
     public async Task<IEnumerable<FitnessGoal>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.FitnessGoals}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -53,7 +53,7 @@ public class FitnessGoalRepository : IFitnessGoalRepository
 
     public async Task<FitnessGoal?> GetByIdAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.FitnessGoals}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -66,7 +66,7 @@ public class FitnessGoalRepository : IFitnessGoalRepository
 
     public async Task UpdateAsync(FitnessGoal item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.FitnessGoals}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{item.Id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {

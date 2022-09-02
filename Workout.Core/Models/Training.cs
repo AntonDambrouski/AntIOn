@@ -1,9 +1,15 @@
-﻿namespace Workout.Core.Models;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using Workout.Core.Enums;
+
+namespace Workout.Core.Models;
 
 public class Training
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
     public string Name { get; set; }
     public IEnumerable<Set> Sets { get; set; }
-    public int Duration { get; set; }
+    public int Duration => Sets.Sum(set => set.GetTimeOfSetInSeconds());
 }

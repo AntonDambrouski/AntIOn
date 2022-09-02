@@ -20,7 +20,7 @@ public class StepRepository : IStepRepository
     public async Task CreateAsync(Step item)
     {
         var content = JsonContent.Create(item);
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Steps}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Steps}/{item.Id}.json";
         var response = await _client.PutAsync(requestUrl, content);
         if (!response.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ public class StepRepository : IStepRepository
 
     public async Task DeleteAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Steps}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Steps}/{id}.json";
         var response = await _client.DeleteAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -40,7 +40,7 @@ public class StepRepository : IStepRepository
 
     public async Task<IEnumerable<Step>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Steps}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Steps}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -53,7 +53,7 @@ public class StepRepository : IStepRepository
 
     public async Task<Step?> GetByIdAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Steps}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Steps}/{id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -66,7 +66,7 @@ public class StepRepository : IStepRepository
 
     public async Task UpdateAsync(Step item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Steps}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Steps}/{item.Id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {

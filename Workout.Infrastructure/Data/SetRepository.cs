@@ -20,7 +20,7 @@ public class SetRepository : ISetRepository
     public async Task CreateAsync(Set item)
     {
         var content = JsonContent.Create(item, item.GetType());
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Sets}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Sets}/{item.Id}.json";
         var response = await _client.PutAsync(requestUrl, content);
         if (!response.IsSuccessStatusCode)
         {
@@ -30,7 +30,7 @@ public class SetRepository : ISetRepository
 
     public async Task DeleteAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Sets}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Sets}/{id}.json";
         var response = await _client.DeleteAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -40,7 +40,7 @@ public class SetRepository : ISetRepository
 
     public async Task<IEnumerable<Set>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Sets}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Sets}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -53,7 +53,7 @@ public class SetRepository : ISetRepository
 
     public async Task<Set?> GetByIdAsync(int id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Sets}/{id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Sets}/{id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
@@ -66,7 +66,7 @@ public class SetRepository : ISetRepository
 
     public async Task UpdateAsync(Set item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{FirebaseTablesNames.Sets}/{item.Id}.json";
+        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.Sets}/{item.Id}.json";
         var response = await _client.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
