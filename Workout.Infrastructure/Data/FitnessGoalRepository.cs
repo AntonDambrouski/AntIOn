@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Driver;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
 using Workout.Core.Constants;
 using Workout.Core.Interfaces.Repositories;
@@ -8,69 +9,38 @@ namespace Workout.Infrastructure.Data;
 
 public class FitnessGoalRepository : IFitnessGoalRepository
 {
-    private readonly string? FirebaseBaseAddress;
-    private readonly HttpClient _client;
+    private readonly IMongoCollection<FitnessGoal> _fitnessGoalsCollection;
 
-    public FitnessGoalRepository(IHttpClientFactory clientFactory)
+    public FitnessGoalRepository()
     {
-        _client = clientFactory.CreateClient();
-        FirebaseBaseAddress = Environment.GetEnvironmentVariable("FirebaseBaseAddress");
+        var connectionString = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.MongoDbConnectionString);
+        var client = new MongoClient(connectionString);
+        var mongoDatabase = client.GetDatabase(MongoDbNames.WorkoutDataBase);
+        _fitnessGoalsCollection = mongoDatabase.GetCollection<FitnessGoal>(MongoDbNames.FitnessGoalsCollection);
     }
 
     public async Task CreateAsync(FitnessGoal item)
     {
-        var content = JsonContent.Create(item);
-        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{item.Id}.json";
-        var response = await _client.PutAsync(requestUrl, content);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
+        await _fitnessGoalsCollection.InsertOneAsync(item);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(string id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{id}.json";
-        var response = await _client.DeleteAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
+        await _fitnessGoalsCollection.DeleteOneAsync(fg => fg.Id == id);
     }
 
     public async Task<IEnumerable<FitnessGoal>> GetAllAsync()
     {
-        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}.json";
-        var response = await _client.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
-
-        var exercisesJson = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<Dictionary<string, FitnessGoal>>(exercisesJson)?.Values;
+        return await _fitnessGoalsCollection.Find(_ => true).ToListAsync();
     }
 
-    public async Task<FitnessGoal?> GetByIdAsync(int id)
+    public async Task<FitnessGoal?> GetByIdAsync(string id)
     {
-        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{id}.json";
-        var response = await _client.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
-
-        var exerciseJson = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<FitnessGoal?>(exerciseJson);
+        return await _fitnessGoalsCollection.Find(fg => fg.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task UpdateAsync(FitnessGoal item)
+    public async Task UpdateAsync(string id, FitnessGoal item)
     {
-        var requestUrl = FirebaseBaseAddress + $"{MongoDbNames.FitnessGoals}/{item.Id}.json";
-        var response = await _client.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new HttpRequestException($"Http request is failed. Error code: {response.StatusCode}");
-        }
+        await _fitnessGoalsCollection.ReplaceOneAsync(fg => fg.Id == id, item);
     }
 }

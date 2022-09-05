@@ -4,20 +4,19 @@ namespace Workout.Infrastructure.Data;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly IHttpClientFactory _clientFactory;
+    private readonly Lazy<SetRepository> _setRepository = new(new SetRepository());
+    private readonly Lazy<StepRepository> _stepRepository = new(new StepRepository());
+    private readonly Lazy<ExerciseRepository> _exerciseRepository = new(new ExerciseRepository());
+    private readonly Lazy<TrainingRepository> _trainingRepository = new(new TrainingRepository());
+    private readonly Lazy<FitnessGoalRepository> _fitnessGoalRepository = new(new FitnessGoalRepository());
 
-    public UnitOfWork(IHttpClientFactory clientFactory)
-    {
-        _clientFactory = clientFactory;
-    }
+    public ISetRepository SetRepository => _setRepository.Value;
 
-    public ISetRepository SetRepository => SetRepository ?? new SetRepository(_clientFactory);
+    public IStepRepository StepRepository => _stepRepository.Value;
 
-    public IStepRepository StepRepository => StepRepository ?? new StepRepository(_clientFactory);
+    public IExerciseRepository ExerciseRepository => _exerciseRepository.Value;
 
-    public IExerciseRepository ExerciseRepository => ExerciseRepository ?? new ExerciseRepository(_clientFactory);
+    public ITrainingRepository TrainingRepository => _trainingRepository.Value;
 
-    public ITrainingRepository TrainingRepository => TrainingRepository ?? new TrainingRepository(_clientFactory);
-
-    public IFitnessGoalRepository FitnessGoalRepository => FitnessGoalRepository ?? new FitnessGoalRepository(_clientFactory);
+    public IFitnessGoalRepository FitnessGoalRepository => _fitnessGoalRepository.Value;
 }
