@@ -5,7 +5,7 @@ namespace Workout.Api.ApiModels.SetDTOs;
 
 public class SetUpdateDTO
 {
-    public int Id { get; set; }
+    public string? Id { get; set; }
     public string Name { get; set; }
     public Exercise Exercise { get; set; }
     public int Rest { get; set; }
