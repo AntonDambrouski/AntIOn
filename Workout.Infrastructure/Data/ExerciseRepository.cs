@@ -1,6 +1,4 @@
 ﻿using MongoDB.Driver;
-using Newtonsoft.Json;
-using System.Net.Http.Json;
 using Workout.Core.Constants;
 using Workout.Core.Interfaces.Repositories;
 using Workout.Core.Models;
