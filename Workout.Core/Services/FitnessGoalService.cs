@@ -82,10 +82,11 @@ public class FitnessGoalService : IFitnessGoalService
 
     private async Task<IEnumerable<Error>?> AssignStepsToFitnessGoalAsync(FitnessGoal fitnessGoal, IEnumerable<string> stepIds)
     {
-        var goalSteps = await _uof.StepRepository.GetByIdsAsync(stepIds);
-        if (goalSteps.Count() != stepIds.Count())
+        var distinctStepIds = stepIds.Distinct().ToList();
+        var goalSteps = await _uof.StepRepository.GetByIdsAsync(distinctStepIds);
+        if (goalSteps.Count() != distinctStepIds.Count)
         {
-            return stepIds
+            return distinctStepIds
                 .Where(id => !goalSteps.Any(step => step.Id == id))
                 .Select(id => new Error
                 {

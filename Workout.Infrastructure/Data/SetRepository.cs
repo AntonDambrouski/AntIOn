@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.VisualBasic;
+using MongoDB.Driver;
 using Workout.Core.Constants;
 using Workout.Core.Interfaces.Repositories;
 using Workout.Core.Models;
@@ -39,7 +40,17 @@ public class SetRepository : ISetRepository
 
     public async Task<IEnumerable<Set>> GetByIdsAsync(IEnumerable<string> ids)
     {
-        return await _setCollection.Find(set => ids.Contains(set.Id)).ToListAsync();
+        var sets = new List<Set>();
+        foreach (var id in ids)
+        {
+            var set = await GetByIdAsync(id);
+            if (set is not null)
+            {
+                sets.Add(set);
+            }
+        }
+
+        return sets;
     }
 
     public async Task UpdateAsync(string id, Set item)

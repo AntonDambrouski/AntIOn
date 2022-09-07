@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using Workout.Core.Enums;
+using Workout.Core.Constants;
 
 namespace Workout.Core.Models;
 
@@ -20,14 +21,15 @@ public class Set
     {
         if (Max)
         {
-            return Rest + 60;
+            return Rest + WorkoutManifest.TimeOfSetOnMaxInSeconds;
         }
 
         var secondsForExercises = ValueUnit switch
         {
             Units.Seconds => Value.Value,
-            Units.Reps => Value.Value,
+            Units.Reps => Value.Value * 3,
             Units.Minutes => Value.Value * 60,
+            Units.Percentages => Value.Value / 100 * WorkoutManifest.TimeOfSetOnMaxInSeconds,
             _ => 0
         };
 
