@@ -4,5 +4,6 @@ public enum Units
 {
     Reps,
     Seconds,
-    Minutes
+    Minutes,
+    Percentages
 }

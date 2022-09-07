@@ -1,6 +1,4 @@
-﻿using Workout.Core.Enums;
-
-namespace Workout.Api.ApiModels.ExerciseDTOs;
+﻿namespace Workout.Api.ApiModels.ExerciseDTOs;
 
 public class ExerciseDTO
 {

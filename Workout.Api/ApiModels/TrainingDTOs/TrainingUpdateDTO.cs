@@ -6,6 +6,5 @@ public class TrainingUpdateDTO
 {
     public string? Id { get; set; }
     public string Name { get; set; }
-    public IEnumerable<Set> Sets { get; set; }
-    public int Duration { get; set; }
+    public IEnumerable<string> SetIds { get; set; }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.StepDTOs;
+using Workout.Core.Extensions;
 using Workout.Core.Interfaces.Repositories;
 using Workout.Core.Models;
 
@@ -12,11 +14,13 @@ public class StepsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uof;
+    private readonly IValidator<Step> _validator;
 
-    public StepsController(IMapper mapper, IUnitOfWork unitOfWork)
+    public StepsController(IMapper mapper, IUnitOfWork unitOfWork, IValidator<Step> validator)
     {
         _mapper = mapper;
         _uof = unitOfWork;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -44,6 +48,16 @@ public class StepsController : ControllerBase
     public async Task<IActionResult> Post([FromBody] StepCreateDTO item)
     {
         var step = _mapper.Map<Step>(item);
+        var validatorResult = _validator.Validate(step);
+        if (!validatorResult.IsValid)
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = validatorResult.GetValidatorErrors()
+            });
+        }
+
         await _uof.StepRepository.CreateAsync(step);
         return CreatedAtAction(nameof(Post), new { step.Id }, step);
     }
@@ -62,11 +76,19 @@ public class StepsController : ControllerBase
             return NotFound();
         }
 
-        step.Name = item.Name;
-        step.Description = item.Description;
-        step.IsCompleted = item.IsCompleted;
+        var updatedStep = _mapper.Map<Step>(step);
+        var validatorResult = _validator.Validate(updatedStep);
+        if (!validatorResult.IsValid)
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = validatorResult.GetValidatorErrors()
+            });
+        }
 
-        await _uof.StepRepository.UpdateAsync(id, step);
+        updatedStep.Id = step.Id;
+        await _uof.StepRepository.UpdateAsync(id, updatedStep);
 
         return NoContent();
     }

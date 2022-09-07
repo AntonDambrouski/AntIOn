@@ -1,7 +1,6 @@
-﻿namespace Workout.Api.ApiModels.ExerciseDTOs
+﻿namespace Workout.Api.ApiModels.ExerciseDTOs;
+
+public class ExerciseCreateDTO
 {
-    public class ExerciseCreateDTO
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }
