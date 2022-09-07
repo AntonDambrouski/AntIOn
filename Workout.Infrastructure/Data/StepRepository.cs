@@ -37,6 +37,11 @@ public class StepRepository : IStepRepository
         return await _stepsCollection.Find(step => step.Id == id).FirstOrDefaultAsync();
     }
 
+    public async Task<IEnumerable<Step>> GetByIdsAsync(IEnumerable<string> ids)
+    {
+        return await _stepsCollection.Find(step => ids.Contains(step.Id)).ToListAsync();
+    }
+
     public async Task UpdateAsync(string id, Step item)
     {
         await _stepsCollection.ReplaceOneAsync(step => step.Id == id, item);

@@ -37,6 +37,11 @@ public class SetRepository : ISetRepository
         return await _setCollection.Find(set => set.Id == id).FirstOrDefaultAsync();
     }
 
+    public async Task<IEnumerable<Set>> GetByIdsAsync(IEnumerable<string> ids)
+    {
+        return await _setCollection.Find(set => ids.Contains(set.Id)).ToListAsync();
+    }
+
     public async Task UpdateAsync(string id, Set item)
     {
         await _setCollection.ReplaceOneAsync(set => set.Id == id, item);

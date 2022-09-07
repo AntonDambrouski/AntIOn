@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.FitnessGoalDTOs;
-using Workout.Core.Interfaces.Repositories;
+using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
 
 namespace Workout.Api.Controllers;
@@ -11,18 +11,18 @@ namespace Workout.Api.Controllers;
 public class FitnessGoalsController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _uof;
+    private readonly IFitnessGoalService _fitnessGoalService;
 
-    public FitnessGoalsController(IMapper mapper, IUnitOfWork unitOfWork)
+    public FitnessGoalsController(IMapper mapper, IFitnessGoalService fitnessGoalService)
     {
         _mapper = mapper;
-        _uof = unitOfWork;
+        _fitnessGoalService = fitnessGoalService;
     }
 
     [HttpGet]
     public async Task<IEnumerable<FitnessGoalDisplayDTO>> Get()
     {
-        var fitnessGoals = await _uof.FitnessGoalRepository.GetAllAsync();
+        var fitnessGoals = await _fitnessGoalService.GetAllAsync();
         var fitnessGoalDTOs = _mapper.Map<IEnumerable<FitnessGoalDisplayDTO>>(fitnessGoals);
         return fitnessGoalDTOs;
     }
@@ -30,7 +30,7 @@ public class FitnessGoalsController : ControllerBase
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<FitnessGoalDetailedDTO>> Get(string id)
     {
-        var fitnessGoal = await _uof.FitnessGoalRepository.GetByIdAsync(id);
+        var fitnessGoal = await _fitnessGoalService.GetByIdAsync(id);
         if (fitnessGoal is null)
         {
             return NotFound();
@@ -44,7 +44,16 @@ public class FitnessGoalsController : ControllerBase
     public async Task<IActionResult> Post([FromBody] FitnessGoalCreateDTO item)
     {
         var fitnessGoal = _mapper.Map<FitnessGoal>(item);
-        await _uof.FitnessGoalRepository.CreateAsync(fitnessGoal);
+        var creatingErrors = await _fitnessGoalService.CreateAsync(fitnessGoal, item.StepIds, item.TargetSetId);
+        if (creatingErrors is not null && creatingErrors.Any())
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = creatingErrors
+            });
+        }
+
         return CreatedAtAction(nameof(Post), new { fitnessGoal.Id }, fitnessGoal);
     }
 
@@ -56,17 +65,24 @@ public class FitnessGoalsController : ControllerBase
             return BadRequest();
         }
 
-        var fitnessGoal = await _uof.FitnessGoalRepository.GetByIdAsync(id);
+        var fitnessGoal = await _fitnessGoalService.GetByIdAsync(id);
         if (fitnessGoal is null)
         {
             return NotFound();
         }
 
-        fitnessGoal.Name = item.Name;
-        fitnessGoal.Steps = item.Steps;
-        fitnessGoal.TargetSet = item.TargetSet; 
-
-        await _uof.FitnessGoalRepository.UpdateAsync(id, fitnessGoal);
+        var updatedFitnessGoal = _mapper.Map<FitnessGoal>(item);
+        updatedFitnessGoal.Id = fitnessGoal.Id;
+        
+        var updatingErrors = await _fitnessGoalService.UpdateAsync(updatedFitnessGoal, item.StepIds, item.TargetSetId);
+        if (updatingErrors is not null && updatingErrors.Any())
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = updatingErrors
+            });
+        }
 
         return NoContent();
     }
@@ -74,13 +90,13 @@ public class FitnessGoalsController : ControllerBase
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var fitnessGoal = await _uof.FitnessGoalRepository.GetByIdAsync(id);
+        var fitnessGoal = await _fitnessGoalService.GetByIdAsync(id);
         if (fitnessGoal is null)
         {
             return NotFound();
         }
 
-        await _uof.FitnessGoalRepository.DeleteAsync(id);
+        await _fitnessGoalService.DeleteAsync(id);
         return NoContent();
     }
 }

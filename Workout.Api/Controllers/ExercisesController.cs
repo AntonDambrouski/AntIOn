@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.ExerciseDTOs;
+using Workout.Core.Extensions;
 using Workout.Core.Interfaces.Repositories;
 using Workout.Core.Models;
 
@@ -12,11 +14,13 @@ public class ExercisesController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uof;
+    private readonly IValidator<Exercise> _validator;
 
-    public ExercisesController(IMapper mapper, IUnitOfWork unitOfWork)
+    public ExercisesController(IMapper mapper, IUnitOfWork unitOfWork, IValidator<Exercise> validator)
     {
         _mapper = mapper;
         _uof = unitOfWork;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -44,6 +48,16 @@ public class ExercisesController : ControllerBase
     public async Task<IActionResult> Post([FromBody] ExerciseCreateDTO item)
     {
         var exercise = _mapper.Map<Exercise>(item);
+        var validatorResult = _validator.Validate(exercise);
+        if (!validatorResult.IsValid)
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = validatorResult.GetValidatorErrors()
+            });
+        }
+
         await _uof.ExerciseRepository.CreateAsync(exercise);
         return CreatedAtAction(nameof(Post), new { exercise.Id }, exercise);
     }
@@ -62,8 +76,19 @@ public class ExercisesController : ControllerBase
             return NotFound();
         }
 
-        exercise.Name = item.Name;
-        await _uof.ExerciseRepository.UpdateAsync(id, exercise);
+        var updatedExercise = _mapper.Map<Exercise>(item);
+        var validatorResult = _validator.Validate(updatedExercise);
+        if (!validatorResult.IsValid)
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = validatorResult.GetValidatorErrors()
+            });
+        }
+
+        updatedExercise.Id = exercise.Id;
+        await _uof.ExerciseRepository.UpdateAsync(id, updatedExercise);
 
         return NoContent();
     }

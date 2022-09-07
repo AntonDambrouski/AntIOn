@@ -1,4 +1,6 @@
-﻿namespace Workout.Api.ApiModels.ExerciseDTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Workout.Api.ApiModels.ExerciseDTOs
 {
     public class ExerciseCreateDTO
     {

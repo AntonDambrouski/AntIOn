@@ -11,5 +11,6 @@ public class SetProfile : Profile
 		CreateMap<Set, SetDisplayDTO>();
 		CreateMap<Set, SetDetailedDTO>();
 		CreateMap<SetCreateDTO, Set>();
+		CreateMap<SetUpdateDTO, Set>();
 	}
 }

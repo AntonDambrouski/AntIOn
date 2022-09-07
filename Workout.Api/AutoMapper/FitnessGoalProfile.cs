@@ -11,5 +11,6 @@ public class FitnessGoalProfile : Profile
 		CreateMap<FitnessGoal, FitnessGoalDisplayDTO>();
 		CreateMap<FitnessGoal, FitnessGoalDetailedDTO>();
 		CreateMap<FitnessGoalCreateDTO, FitnessGoal>();
+		CreateMap<FitnessGoalUpdateDTO, FitnessGoal>();
 	}
 }

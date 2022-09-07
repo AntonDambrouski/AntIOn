@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.TrainingDTOs;
-using Workout.Core.Interfaces.Repositories;
+using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
 
 namespace Workout.Api.Controllers;
@@ -11,18 +11,18 @@ namespace Workout.Api.Controllers;
 public class TrainingsController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _uof;
+    private readonly ITrainingService _trainingService;
 
-    public TrainingsController(IMapper mapper, IUnitOfWork unitOfWork)
+    public TrainingsController(IMapper mapper, ITrainingService trainingService)
     {
         _mapper = mapper;
-        _uof = unitOfWork;
+        _trainingService = trainingService;
     }
 
     [HttpGet]
     public async Task<IEnumerable<TrainingDisplayDTO>> Get()
     {
-        var trainings = await _uof.TrainingRepository.GetAllAsync();
+        var trainings = await _trainingService.GetAllAsync();
         var trainingDTOs = _mapper.Map<IEnumerable<TrainingDisplayDTO>>(trainings);
         return trainingDTOs;
     }
@@ -30,7 +30,7 @@ public class TrainingsController : ControllerBase
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<TrainingDetailedDTO>> Get(string id)
     {
-        var training = await _uof.TrainingRepository.GetByIdAsync(id);
+        var training = await _trainingService.GetByIdAsync(id);
         if (training is null)
         {
             return NotFound();
@@ -44,7 +44,16 @@ public class TrainingsController : ControllerBase
     public async Task<IActionResult> Post([FromBody] TrainingCreateDTO item)
     {
         var training = _mapper.Map<Training>(item);
-        await _uof.TrainingRepository.CreateAsync(training);
+        var creatingErrors = await _trainingService.CreateAsync(training, item.SetIds);
+        if (creatingErrors is not null && creatingErrors.Any())
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = creatingErrors
+            });
+        }
+
         return CreatedAtAction(nameof(Post), new { training.Id }, training);
     }
 
@@ -56,16 +65,24 @@ public class TrainingsController : ControllerBase
             return BadRequest();
         }
 
-        var training = await _uof.TrainingRepository.GetByIdAsync(id);
+        var training = await _trainingService.GetByIdAsync(id);
         if (training is null)
         {
             return NotFound();
         }
 
-        training.Name = item.Name;
-        training.Sets = item.Sets;
+        var updatedTraining = _mapper.Map<Training>(item);
+        updatedTraining.Id = training.Id;
 
-        await _uof.TrainingRepository.UpdateAsync(id, training);
+        var updatingErrors = await _trainingService.UpdateAsync(updatedTraining, item.SetIds);
+        if (updatingErrors is not null && updatingErrors.Any())
+        {
+            return BadRequest(new
+            {
+                errorMessage = "The model input is invalid.",
+                errors = updatingErrors
+            });
+        }
 
         return NoContent();
     }
@@ -73,13 +90,13 @@ public class TrainingsController : ControllerBase
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var training = await _uof.TrainingRepository.GetByIdAsync(id);
+        var training = await _trainingService.GetByIdAsync(id);
         if (training is null)
         {
             return NotFound();
         }
 
-        await _uof.TrainingRepository.DeleteAsync(id);
+        await _trainingService.DeleteAsync(id);
         return NoContent();
     }
 }

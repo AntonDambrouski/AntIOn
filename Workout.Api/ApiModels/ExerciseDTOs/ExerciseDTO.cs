@@ -1,4 +1,5 @@
-﻿using Workout.Core.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Workout.Core.Enums;
 
 namespace Workout.Api.ApiModels.ExerciseDTOs;
 

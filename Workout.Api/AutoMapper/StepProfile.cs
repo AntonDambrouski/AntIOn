@@ -11,5 +11,6 @@ public class StepProfile : Profile
 		CreateMap<Step, StepDisplayDTO>();
 		CreateMap<Step, StepDetailedDTO>();
 		CreateMap<StepCreateDTO, Step>();
+		CreateMap<StepUpdateDTO, Step>();
 	}
 }

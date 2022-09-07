@@ -11,5 +11,6 @@ public class TrainingProfile : Profile
         CreateMap<Training, TrainingDisplayDTO>();
         CreateMap<Training, TrainingDetailedDTO>();
         CreateMap<TrainingCreateDTO, Training>();
+        CreateMap<TrainingUpdateDTO, Training>();
     }
 }
