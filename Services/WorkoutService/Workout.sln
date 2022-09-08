@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Api", "Workout.Api\Workout.Api.csproj", "{88A70069-55AD-4066-996F-F270CF8E81E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Core", "Workout.Core\Workout.Core.csproj", "{AD901851-9D67-4FEC-95F1-65CE44A89DDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Infrastructure", "Workout.Infrastructure\Workout.Infrastructure.csproj", "{EF284F86-B216-4352-80A4-180F62DD4FF0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88A70069-55AD-4066-996F-F270CF8E81E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A70069-55AD-4066-996F-F270CF8E81E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A70069-55AD-4066-996F-F270CF8E81E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A70069-55AD-4066-996F-F270CF8E81E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD901851-9D67-4FEC-95F1-65CE44A89DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD901851-9D67-4FEC-95F1-65CE44A89DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD901851-9D67-4FEC-95F1-65CE44A89DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD901851-9D67-4FEC-95F1-65CE44A89DDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
