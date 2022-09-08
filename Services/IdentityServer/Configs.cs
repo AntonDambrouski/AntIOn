@@ -12,22 +12,29 @@ namespace IdentityServer
                 new IdentityResources.Profile()
             };
 
+        public static IEnumerable<ApiScope> GetApiScopes() =>
+            new ApiScope[]
+            {
+                new ApiScope("workout.api", "WorkoutApi")
+            };
+
         public static IEnumerable<Client> GetClients() =>
             new Client[]
             {
                 new Client
                 {
-                    ClientId = "angular",
+                    ClientId = "AntIOn",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     RedirectUris = { "https://localhost:5003/signin-oidc" },
 
                     AllowedScopes = 
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile 
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "workout.api"
                     }
                 }
             };

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.StepDTOs;
 using Workout.Core.Extensions;
@@ -9,6 +10,7 @@ using Workout.Core.Models;
 namespace Workout.Api.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Policy = "ApiScope")]
 [ApiController]
 public class StepsController : ControllerBase
 {

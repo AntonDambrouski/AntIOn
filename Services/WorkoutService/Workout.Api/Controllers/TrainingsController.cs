@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.TrainingDTOs;
 using Workout.Core.Interfaces.Services;
@@ -7,6 +8,7 @@ using Workout.Core.Models;
 namespace Workout.Api.Controllers;
 
 [Route("api/[controller]")]
+[Authorize(Policy = "ApiScope")]
 [ApiController]
 public class TrainingsController : ControllerBase
 {
@@ -20,6 +22,7 @@ public class TrainingsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IEnumerable<TrainingDisplayDTO>> Get()
     {
         var trainings = await _trainingService.GetAllAsync();

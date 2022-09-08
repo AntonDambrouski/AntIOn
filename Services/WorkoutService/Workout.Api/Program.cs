@@ -1,4 +1,6 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Workout.Core.Interfaces.Repositories;
 using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
@@ -9,6 +11,28 @@ using Workout.Infrastructure.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
+{
+    config.Authority = "https://localhost:5001";
+    config.SaveToken = true;
+
+    config.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddAuthorization(config =>
+{
+    config.AddPolicy("ApiScope", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "workout.api");
+    });
+});
+
 builder.Services.AddScoped<IValidator<Exercise>, ExerciseValidator>();
 builder.Services.AddScoped<IValidator<Set>, SetValidator>();
 builder.Services.AddScoped<IValidator<Step>, StepValidator>();
