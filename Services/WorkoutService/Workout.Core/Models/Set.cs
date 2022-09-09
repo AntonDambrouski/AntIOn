@@ -1,15 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
-using Workout.Core.Enums;
+﻿using Workout.Core.Enums;
 using Workout.Core.Constants;
 
 namespace Workout.Core.Models;
 
-public class Set
+public class Set : EntityBase
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
     public string Name { get; set; }
     public Exercise Exercise { get; set; }
     public int Rest { get; set; }

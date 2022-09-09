@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Workout.Api.ApiModels.ExerciseDTOs;
 using Workout.Api.ApiModels.FitnessGoalDTOs;
+using Workout.Api.ApiModels.UrlQueries;
+using Workout.Api.Helpers;
+using Workout.Api.Wrappers;
 using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
 
@@ -14,32 +18,48 @@ public class FitnessGoalsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IFitnessGoalService _fitnessGoalService;
+    private readonly IUrlService _urlService;
 
-    public FitnessGoalsController(IMapper mapper, IFitnessGoalService fitnessGoalService)
+    public FitnessGoalsController(IMapper mapper, IFitnessGoalService fitnessGoalService, IUrlService urlService)
     {
         _mapper = mapper;
         _fitnessGoalService = fitnessGoalService;
+        _urlService = urlService;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<FitnessGoalDisplayDTO>> Get()
+    public async Task<IActionResult> Get([FromQuery] PaginationUrlQuery query)
     {
-        var fitnessGoals = await _fitnessGoalService.GetAllAsync();
+        var fitnessGoals = await _fitnessGoalService.GetPaginatedAsync(query.PageNumber, query.PageSize);
         var fitnessGoalDTOs = _mapper.Map<IEnumerable<FitnessGoalDisplayDTO>>(fitnessGoals);
-        return fitnessGoalDTOs;
+
+        var route = Request.Path;
+        var totalRecords = await _fitnessGoalService.GetRecordsCountAsync();
+
+        var paginatedResponse = PaginationHelper.CreatePagedResponse(fitnessGoalDTOs, query, totalRecords, _urlService, route);
+
+        return Ok(paginatedResponse);
     }
 
     [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<FitnessGoalDetailedDTO>> Get(string id)
+    public async Task<IActionResult> Get(string id)
     {
         var fitnessGoal = await _fitnessGoalService.GetByIdAsync(id);
         if (fitnessGoal is null)
         {
-            return NotFound();
+            var error = new Error
+            {
+                Name = "Fitness goal isn't found",
+                Message = $"Fitness goal with id: {id} doesn't exist"
+            };
+
+            var errorResponse = new Response<FitnessGoalDetailedDTO>(new[] { error }, "Not found");
+            return NotFound(errorResponse);
         }
 
         var fitnessGoalDTO = _mapper.Map<FitnessGoalDetailedDTO>(fitnessGoal);
-        return fitnessGoalDTO;
+        var successfulResponse = new Response<FitnessGoalDetailedDTO>(fitnessGoalDTO);
+        return Ok(successfulResponse);
     }
 
     [HttpPost]

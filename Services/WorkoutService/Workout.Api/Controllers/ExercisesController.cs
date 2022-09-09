@@ -3,8 +3,12 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Api.ApiModels.ExerciseDTOs;
+using Workout.Api.ApiModels.UrlQueries;
+using Workout.Api.Helpers;
+using Workout.Api.Wrappers;
 using Workout.Core.Extensions;
 using Workout.Core.Interfaces.Repositories;
+using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
 
 namespace Workout.Api.Controllers;
@@ -17,33 +21,52 @@ public class ExercisesController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uof;
     private readonly IValidator<Exercise> _validator;
+    private readonly IUrlService _urlService;
 
-    public ExercisesController(IMapper mapper, IUnitOfWork unitOfWork, IValidator<Exercise> validator)
+    public ExercisesController(
+        IMapper mapper,
+        IUnitOfWork unitOfWork, 
+        IValidator<Exercise> validator, 
+        IUrlService urlService)
     {
         _mapper = mapper;
         _uof = unitOfWork;
         _validator = validator;
+        _urlService = urlService;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<ExerciseDTO>> Get()
+    public async Task<IActionResult> Get([FromQuery] PaginationUrlQuery query)
     {
-        var exercises = await _uof.ExerciseRepository.GetAllAsync();
+        var exercises = await _uof.ExerciseRepository.GetPaginatedAsync(query.PageNumber, query.PageSize);
         var exerciseDTOs = _mapper.Map<IEnumerable<ExerciseDTO>>(exercises);
-        return exerciseDTOs;
+       
+        var route = Request.Path;
+        var totalCount = await _uof.ExerciseRepository.CountAsync();
+        var pagedResponse = PaginationHelper.CreatePagedResponse(exerciseDTOs, query, totalCount, _urlService, route);
+        
+        return Ok(pagedResponse);
     }
 
     [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<ExerciseDTO>> Get(string id)
+    public async Task<IActionResult> Get(string id)
     {
         var exercise = await _uof.ExerciseRepository.GetByIdAsync(id);
         if (exercise is null)
         {
-            return NotFound();
+            var error = new Error
+            {
+                Name = "Exercise isn't found",
+                Message = $"Exercise with id: {id} doesn't exist"
+            };
+
+            var errorResponse = new Response<ExerciseDTO>(new[] { error }, "Not found");
+            return NotFound(errorResponse);
         }
 
         var exerciseDTO = _mapper.Map<ExerciseDTO>(exercise);
-        return exerciseDTO;
+        var successfulResponse = new Response<ExerciseDTO>(exerciseDTO);
+        return Ok(successfulResponse);
     }
 
     [HttpPost]

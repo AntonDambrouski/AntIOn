@@ -9,4 +9,6 @@ public interface ISetService
     Task DeleteAsync(string id);
     Task<Set?> GetByIdAsync(string id);
     Task<IEnumerable<Set>> GetAllAsync();
+    Task<IEnumerable<Set>> GetPaginatedAsync(int pageNumber, int pageSize);
+    Task<long> GetRecordsCountAsync();
 }

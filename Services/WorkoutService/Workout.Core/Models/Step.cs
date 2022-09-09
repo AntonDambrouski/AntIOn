@@ -1,13 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿namespace Workout.Core.Models;
 
-namespace Workout.Core.Models;
-
-public class Step
+public class Step : EntityBase
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
     public string Name { get; set; }
     public bool IsCompleted { get; set; }
 }

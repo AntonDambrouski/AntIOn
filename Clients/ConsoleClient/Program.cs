@@ -26,7 +26,7 @@ if (tokenResponse.IsError)
 var apiClient = new HttpClient();
 apiClient.SetBearerToken(tokenResponse.AccessToken);
 
-var response = await apiClient.GetAsync("https://localhost:5003/api/exercises");
+var response = await apiClient.GetAsync("https://localhost:7258/api/exercises");
 if (!response.IsSuccessStatusCode)
 {
     Console.WriteLine(response.StatusCode);

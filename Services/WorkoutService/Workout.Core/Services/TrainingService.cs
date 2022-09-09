@@ -51,6 +51,16 @@ public class TrainingService : ITrainingService
         return await _uof.TrainingRepository.GetByIdAsync(id);
     }
 
+    public async Task<IEnumerable<Training>> GetPaginatedAsync(int pageNumber, int pageSize)
+    {
+        return await _uof.TrainingRepository.GetPaginatedAsync(pageNumber, pageSize);
+    }
+
+    public async Task<long> GetRecordsCountAsync()
+    {
+        return await _uof.TrainingRepository.CountAsync();
+    }
+
     public async Task<IEnumerable<Error>?> UpdateAsync(Training training, IEnumerable<string> setIds)
     {
         var assigningSetsErrors = await AssignSetsToTrainingAsync(training, setIds);

@@ -1,11 +1,15 @@
-﻿namespace Workout.Core.Interfaces.Repositories;
+﻿using Workout.Core.Models;
 
-public interface IRepository<T>
-    where T : class
+namespace Workout.Core.Interfaces.Repositories;
+
+public interface IRepository<TDocument>
+    where TDocument : EntityBase
 {
-    Task<T?> GetByIdAsync(string id);
-    Task<IEnumerable<T>> GetAllAsync();
-    Task CreateAsync(T item);
-    Task UpdateAsync(string id, T item);
+    Task<TDocument?> GetByIdAsync(string id);
+    Task<IEnumerable<TDocument>> GetAllAsync();
+    Task CreateAsync(TDocument item);
+    Task UpdateAsync(string id, TDocument item);
     Task DeleteAsync(string id);
+    Task<long> CountAsync();
+    Task<IEnumerable<TDocument>> GetPaginatedAsync(int pageNumber, int pageSize);
 }

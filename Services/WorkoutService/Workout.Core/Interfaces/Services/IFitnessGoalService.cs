@@ -9,4 +9,6 @@ public interface IFitnessGoalService
     Task DeleteAsync(string id);
     Task<FitnessGoal?> GetByIdAsync(string id);
     Task<IEnumerable<FitnessGoal>> GetAllAsync();
+    Task<IEnumerable<FitnessGoal>> GetPaginatedAsync(int pageNumber, int pageSize);
+    Task<long> GetRecordsCountAsync();
 }
