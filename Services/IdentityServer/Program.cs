@@ -32,12 +32,12 @@ builder.Services.AddIdentityServer()
     .AddTestUsers(TestUsers.Users)
     .AddDeveloperSigningCredential();
 
-builder.Services.AddAuthentication()
-    .AddFacebook(configs =>
-    {
-        configs.AppId = Environment.GetEnvironmentVariable("FacebookAppId");
-        configs.AppSecret = Environment.GetEnvironmentVariable("FacebookAppSecret");
-    });
+//builder.Services.AddAuthentication()
+//    .AddFacebook(configs =>
+//    {
+//        configs.AppId = Environment.GetEnvironmentVariable("FacebookAppId");
+//        configs.AppSecret = Environment.GetEnvironmentVariable("FacebookAppSecret");
+//    });
 
 builder.Services.AddControllersWithViews();
 

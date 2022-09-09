@@ -5,45 +5,13 @@ using Workout.Core.Models;
 
 namespace Workout.Infrastructure.Data;
 
-public class StepRepository : IStepRepository
+public class StepRepository : RepositoryBase<Step>, IStepRepository
 {
-    private readonly IMongoCollection<Step> _stepsCollection;
-
-    public StepRepository()
-    {
-        var connectionString = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.MongoDbConnectionString);
-        var client = new MongoClient(connectionString);
-        var mongoDatabase = client.GetDatabase(MongoDbNames.WorkoutDataBase);
-        _stepsCollection = mongoDatabase.GetCollection<Step>(MongoDbNames.StepsCollection);
-    }
-
-    public async Task CreateAsync(Step item)
-    {
-        await _stepsCollection.InsertOneAsync(item);
-    }
-
-    public async Task DeleteAsync(string id)
-    {
-        await _stepsCollection.DeleteOneAsync(step => step.Id == id);
-    }
-
-    public async Task<IEnumerable<Step>> GetAllAsync()
-    {
-        return await _stepsCollection.Find(_ => true).ToListAsync();
-    }
-
-    public async Task<Step?> GetByIdAsync(string id)
-    {
-        return await _stepsCollection.Find(step => step.Id == id).FirstOrDefaultAsync();
-    }
+    public StepRepository(IMongoCollection<Step> collection) : base(collection)
+    { }
 
     public async Task<IEnumerable<Step>> GetByIdsAsync(IEnumerable<string> ids)
     {
-        return await _stepsCollection.Find(step => ids.Contains(step.Id)).ToListAsync();
-    }
-
-    public async Task UpdateAsync(string id, Step item)
-    {
-        await _stepsCollection.ReplaceOneAsync(step => step.Id == id, item);
+        return await _collection.Find(step => ids.Contains(step.Id)).ToListAsync();
     }
 }

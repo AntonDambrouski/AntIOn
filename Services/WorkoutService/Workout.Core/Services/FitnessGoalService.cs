@@ -115,4 +115,14 @@ public class FitnessGoalService : IFitnessGoalService
         fitnessGoal.TargetSet = set;
         return null;
     }
+
+    public async Task<IEnumerable<FitnessGoal>> GetPaginatedAsync(int pageNumber, int pageSize)
+    {
+        return await _uof.FitnessGoalRepository.GetPaginatedAsync(pageNumber, pageSize);
+    }
+
+    public async Task<long> GetRecordsCountAsync()
+    {
+        return await _uof.FitnessGoalRepository.CountAsync();
+    }
 }

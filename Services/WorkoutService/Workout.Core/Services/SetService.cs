@@ -50,6 +50,16 @@ public class SetService : ISetService
         return await _uof.SetRepository.GetByIdAsync(id);
     }
 
+    public async Task<IEnumerable<Set>> GetPaginatedAsync(int pageNumber, int pageSize)
+    {
+        return await _uof.SetRepository.GetPaginatedAsync(pageNumber, pageSize);
+    }
+
+    public async Task<long> GetRecordsCountAsync()
+    {
+        return await _uof.SetRepository.CountAsync();
+    }
+
     public async Task<IEnumerable<Error>?> UpdateAsync(Set set, string exerciseId)
     {
         var assigningExerciseErrors = await AssignExerciseToSetAsync(set, exerciseId);

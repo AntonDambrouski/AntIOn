@@ -44,7 +44,17 @@ builder.Services.AddScoped<ISetService, SetService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 
 builder.Services.AddSingleton<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<IUrlService>(sp =>
+{
+    var accessor = sp.GetService<IHttpContextAccessor>();
+    var request = accessor.HttpContext.Request;
+    var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+    return new UrlService(uri);
+});
+
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 
 var app = builder.Build();

@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Workout.Api.ApiModels.SetDTOs;
 using Workout.Api.ApiModels.TrainingDTOs;
+using Workout.Api.ApiModels.UrlQueries;
+using Workout.Api.Helpers;
+using Workout.Api.Wrappers;
 using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
+using Workout.Core.Services;
 
 namespace Workout.Api.Controllers;
 
@@ -14,20 +19,28 @@ public class TrainingsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly ITrainingService _trainingService;
+    private readonly IUrlService _urlService;
 
-    public TrainingsController(IMapper mapper, ITrainingService trainingService)
+    public TrainingsController(IMapper mapper, ITrainingService trainingService, IUrlService urlService)
     {
         _mapper = mapper;
         _trainingService = trainingService;
+        _urlService = urlService;
     }
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IEnumerable<TrainingDisplayDTO>> Get()
+    public async Task<IActionResult> Get([FromQuery] PaginationUrlQuery query)
     {
         var trainings = await _trainingService.GetAllAsync();
         var trainingDTOs = _mapper.Map<IEnumerable<TrainingDisplayDTO>>(trainings);
-        return trainingDTOs;
+
+        var route = Request.Path;
+        var totalRecords = await _trainingService.GetRecordsCountAsync();
+
+        var paginatedResponse = PaginationHelper.CreatePagedResponse(trainingDTOs, query, totalRecords, _urlService, route);
+
+        return Ok(paginatedResponse);
     }
 
     [HttpGet("{id:length(24)}")]
@@ -36,11 +49,19 @@ public class TrainingsController : ControllerBase
         var training = await _trainingService.GetByIdAsync(id);
         if (training is null)
         {
-            return NotFound();
+            var error = new Error
+            {
+                Name = "Training isn't found",
+                Message = $"Training with id: {id} doesn't exist"
+            };
+
+            var errorResponse = new Response<TrainingDetailedDTO>(new[] { error }, "Not found");
+            return NotFound(errorResponse);
         }
 
         var trainingDTO = _mapper.Map<TrainingDetailedDTO>(training);
-        return trainingDTO;
+        var successfulResponse = new Response<TrainingDetailedDTO>(trainingDTO);
+        return Ok(successfulResponse);
     }
 
     [HttpPost]

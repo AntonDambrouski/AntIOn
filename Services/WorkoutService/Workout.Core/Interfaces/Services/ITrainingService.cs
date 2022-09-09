@@ -9,4 +9,6 @@ public interface ITrainingService
     Task DeleteAsync(string id);
     Task<Training?> GetByIdAsync(string id);
     Task<IEnumerable<Training>> GetAllAsync();
+    Task<IEnumerable<Training>> GetPaginatedAsync(int pageNumber, int pageSize);
+    Task<long> GetRecordsCountAsync();
 }
