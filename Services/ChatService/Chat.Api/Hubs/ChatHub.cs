@@ -11,6 +11,7 @@ public class ChatHub : Hub<IChatHub>
 {
     private static int Id = 0;
     private static readonly ConcurrentDictionary<string, User> Users = new();
+
     public async Task SendAnonymous(Message message)
     {
         message.SentDate = DateTime.UtcNow;
