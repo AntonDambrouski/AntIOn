@@ -1,14 +1,12 @@
-﻿{
+{
   "profiles": {
-    "Chat.Api": {
+    "ConsoleClient": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
-      "applicationUrl": "https://localhost:5004",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:59701;http://localhost:59702"
     }
   }
 }
