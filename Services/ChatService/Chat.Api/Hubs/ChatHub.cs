@@ -22,9 +22,8 @@ public class ChatHub : Hub<IChatHub>
     [Authorize]
     public async Task SendAuthorized(Message message)
     {
-        var username = Context.User.Identity.Name;
         message.SentDate = DateTime.UtcNow;
-        message.From = Users[username];
+        message.From = Users.First(u => u.Value.ConnectionIds.Contains(Context.ConnectionId)).Value;
         await Clients.Group(GroupNames.Authorized).ReceiveAuthorized(message);
     }
 
@@ -38,7 +37,7 @@ public class ChatHub : Hub<IChatHub>
         var isAuthenticated = Context.User.Identity.IsAuthenticated;
         if (!isAuthenticated)
         {
-            var username = $"John Snow #{Id++}";
+            var username = $"John Snow #{Interlocked.Increment(ref Id)}";
             Users[username] = new User
             {
                 Username = username,
@@ -52,7 +51,7 @@ public class ChatHub : Hub<IChatHub>
         }
         else
         {
-            var username = Context.User.Identity.Name;
+            var username = $"Boby Axelrod {Interlocked.Increment(ref Id)}";
             var user = Users.GetOrAdd(username, _ => new User
             {
                 IsAuthenticated = isAuthenticated,
@@ -80,26 +79,24 @@ public class ChatHub : Hub<IChatHub>
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         var isAuthenticated = Context.User.Identity.IsAuthenticated;
+        var user = Users.First(u => u.Value.ConnectionIds.Contains(Context.ConnectionId)).Value;
         if (!isAuthenticated)
         {
-            var user = Users.First(u => u.Value.ConnectionIds.Contains(Context.ConnectionId)).Value;
             Users.Remove(user.Username, out var removedUser);
             var notification = new Notification { Text = $"{user.Username} has left this conversation!" };
             await NotificateUsersGroup(removedUser.Username, GroupNames.Anonymous, notification);
         }
         else
         {
-            var username = Context.User.Identity.Name;
-            Users.TryGetValue(username, out var user);
             lock (user.ConnectionIds)
             {
                 user.ConnectionIds.RemoveWhere(cid => cid.Equals(Context.ConnectionId));
                 if (!user.ConnectionIds.Any())
                 {
-                    Users.Remove(username, out var removedUser);
-                    var notification = new Notification { Text = $"{username} has left this conversation!" };
-                    NotificateUsersGroup(username, GroupNames.Anonymous, notification).Wait();
-                    NotificateUsersGroup(username, GroupNames.Authorized, notification).Wait();
+                    Users.Remove(user.Username, out var removedUser);
+                    var notification = new Notification { Text = $"{user.Username} has left this conversation!" };
+                    NotificateUsersGroup(user.Username, GroupNames.Anonymous, notification).Wait();
+                    NotificateUsersGroup(user.Username, GroupNames.Authorized, notification).Wait();
                 }
             }
         }
