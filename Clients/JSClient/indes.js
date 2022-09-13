@@ -1,10 +1,7 @@
 "use strict";
 
 let connection = new signalR.HubConnectionBuilder()
-  .withUrl("https://localhost:5004/hubs/chat", {
-    accessTokenFactory: () =>
-      "eyJhbGciOiJSUzI1NiIsImtpZCI6IkM5QzQxNjlDRkJENEUyODYzNDQzOTEwODkxQkU1NUI3IiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIiwibmJmIjoxNjYyOTk3MTUyLCJpYXQiOjE2NjI5OTcxNTIsImV4cCI6MTY2MzAwMDc1Miwic2NvcGUiOlsid29ya291dC5hcGkiXSwiY2xpZW50X2lkIjoiQW50SU9uIiwianRpIjoiRUQzMjE2REQ1RDI3NEE0NDQwNzQ1QzlCMjNDQkEwNEYifQ.CBsh7nnaimBvgJvSQcDNeIDg8yvVzaiFNFjYm1_IKFFj4NnSP1WT-UVdFK0S0TUYA_7GKlwUwF0CFmpvKYxjjgLdG3PQkFLf-VZuzfIMSDEeCOGuybDD3O0kqCKj_mvzSuVwXwqBQIXlpYMmyE_Pz7ZyF8trkBT5OIh_SU2dINgPn4EqChIBfZSz7Gk3WhZJIPEOHcG8rt1QgduRZmODM40BfAAQLCh2c94hA9VCbs2avnV3_bmsZAbxnjKLBBwK3mfE5Ws_QEOz1xuBGApk_i3sipUBH0iG8lBKC67yNcrR8jNOpAqHsTuYY32cPkXY0OsDt4KBsZbFKl3hDfjZJw",
-  })
+  .withUrl("https://localhost:5004/hubs/chat")
   .build();
 
 document.getElementById("sendButton").disabled = true;
