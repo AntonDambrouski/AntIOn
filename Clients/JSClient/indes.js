@@ -1,7 +1,7 @@
 "use strict";
 
 let connection = new signalR.HubConnectionBuilder()
-  .withUrl("https://localhost:5004/chat")
+  .withUrl("https://localhost:5004/hubs/chat")
   .build();
 
 document.getElementById("sendButton").disabled = true;
