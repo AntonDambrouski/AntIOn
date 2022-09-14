@@ -1,0 +1,37 @@
+version: '3.4'
+
+networks:
+  backend:
+  frontend:
+
+services:
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/OcelotApiGateway/Dockerfile
+    ports:
+      - 5005:80
+    networks:
+      - backend
+      - frontend
+
+  workoutwebapi:
+    container_name: workout-api
+    image: ${DOCKER_REGISTRY-}workoutapi
+    build:
+      context: .
+      dockerfile: Services/WorkoutService/Workout.Api/Dockerfile
+    ports:
+      - 5001:80
+    networks:
+      - backend
+
+  workoutdb:
+    container_name: mongoDb
+    image: mongo
+    ports:
+      - 18005:27017
+    networks:
+      - backend

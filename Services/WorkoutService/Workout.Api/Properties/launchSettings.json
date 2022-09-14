@@ -3,9 +3,7 @@
     "Workout.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "api/exercises",
-      "applicationUrl": "https://localhost:7258;http://localhost:5258",
+      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MongoDbConnectionString": "mongodb://localhost:27017"

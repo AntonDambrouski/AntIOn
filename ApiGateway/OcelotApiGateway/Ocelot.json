@@ -1,0 +1,33 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/exercises",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/exercises"
+    },
+    {
+      "UpstreamPathTemplate": "/api/exercises/{exerciseId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/exercises/{exerciseId}"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5005"
+  }
+}

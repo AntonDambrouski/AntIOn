@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
+  workoutwebapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MongoDbConnectionString=mongodb://workoutdb:27017
+    ports:
+      - "80"
+
