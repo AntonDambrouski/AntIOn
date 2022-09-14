@@ -1,21 +1,13 @@
-{
+﻿{
   "profiles": {
     "Workout.Api": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/exercises",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MongoDbConnectionString": "mongodb://localhost:27017"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5001"
-    },
-    "Docker (1)": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/exercises",
-      "publishAllPorts": true
+      }
     }
   }
 }
