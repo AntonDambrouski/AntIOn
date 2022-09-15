@@ -170,7 +170,7 @@
         }
       ],
 
-      "DownstreamPathTemplate": "/api/fitnessgoal/{fitnessgoalId}",
+      "DownstreamPathTemplate": "/api/fitnessgoals/{fitnessgoalId}",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []

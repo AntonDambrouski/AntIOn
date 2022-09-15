@@ -13,7 +13,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
     {
         config.Authority = Environment.GetEnvironmentVariable(EnvironmentVariableNames.IdentityServerUrl);
-      //  config.SaveToken = true;
         config.RequireHttpsMetadata = false;
         config.TokenValidationParameters = new TokenValidationParameters
         {

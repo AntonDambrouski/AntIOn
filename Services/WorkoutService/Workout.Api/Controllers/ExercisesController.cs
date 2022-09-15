@@ -70,7 +70,6 @@ public class ExercisesController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
     public async Task<IActionResult> Post([FromBody] ExerciseCreateDTO item)
     {
         var exercise = _mapper.Map<Exercise>(item);
