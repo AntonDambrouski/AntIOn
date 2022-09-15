@@ -17,7 +17,7 @@
                     <div class="alert alert-danger" role="alert"><strong>@error.Name:</strong> @error.Message</div>
                 }
             }
-            <form asp-controller="Account" asp-action="Login" method="post">
+            <form asp-controller="Accounts" asp-action="Login" method="post">
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="form-group mb-2">
                     <label for="name" class="form-label">
@@ -42,7 +42,7 @@
                     <button type="submit" class="btn btn-outline-primary">Login</button>
                 </div>
                 <div>
-                    <a class="link-dark" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Go to Registration</a>
+                    <a class="link-dark" asp-controller="Accounts" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Go to Registration</a>
                 </div>
             </form>
         </div>

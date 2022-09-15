@@ -1,7 +1,15 @@
 ﻿using IdentityModel.Client;
 
 var client = new HttpClient();
-var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+{
+    Address = "http://localhost:5005/identity_server",
+    Policy = new DiscoveryPolicy
+    {
+        RequireHttps = false,
+        ValidateIssuerName = false
+    }
+});
 if (disco.IsError)
 {
     Console.WriteLine(disco.Error);

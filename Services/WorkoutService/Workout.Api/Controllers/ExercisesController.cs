@@ -36,7 +36,6 @@ public class ExercisesController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> Get([FromQuery] PaginationUrlQuery query)
     {
         var exercises = await _uof.ExerciseRepository.GetPaginatedAsync(query.PageNumber, query.PageSize);
@@ -71,7 +70,6 @@ public class ExercisesController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
     public async Task<IActionResult> Post([FromBody] ExerciseCreateDTO item)
     {
         var exercise = _mapper.Map<Exercise>(item);
