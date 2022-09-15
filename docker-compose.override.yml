@@ -4,6 +4,7 @@ services:
   apigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerUrl=http://identityserver
     ports:
       - "80"
 
@@ -11,6 +12,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDbConnectionString=mongodb://workoutdb:27017
+    ports:
+      - "80"
+
+
+  identityserver:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80"
 

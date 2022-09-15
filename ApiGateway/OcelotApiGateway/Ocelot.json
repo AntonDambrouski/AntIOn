@@ -1,5 +1,7 @@
 {
   "Routes": [
+    // workout api routes:
+    // Exercises:
     {
       "UpstreamPathTemplate": "/api/exercises",
       "UpstreamHttpMethod": [ "Get", "Post" ],
@@ -11,7 +13,11 @@
         }
       ],
 
-      "DownstreamPathTemplate": "/api/exercises"
+      "DownstreamPathTemplate": "/api/exercises",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "UpstreamPathTemplate": "/api/exercises/{exerciseId}",
@@ -24,7 +30,166 @@
         }
       ],
 
-      "DownstreamPathTemplate": "/api/exercises/{exerciseId}"
+      "DownstreamPathTemplate": "/api/exercises/{exerciseId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    // Sets
+    {
+      "UpstreamPathTemplate": "/api/sets",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/sets",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/sets/{setId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/sets/{setId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    // Steps
+    {
+      "UpstreamPathTemplate": "/api/steps",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/steps",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/steps/{stepId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/steps/{stepId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    // Trainings
+    {
+      "UpstreamPathTemplate": "/api/trainings",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/trainings",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/trainings/{trainingId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/trainings/{trainingId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    // FitnessGoals
+    {
+      "UpstreamPathTemplate": "/api/fitnessgoals",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/fitnessgoals",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/fitnessgoals/{fitnessgoalId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "workoutwebapi",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/api/fitnessgoal/{fitnessgoalId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    // Identity Server Route
+    {
+      "UpstreamPathTemplate": "/identity_server/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identityserver",
+          "Port": 80
+        }
+      ],
+
+      "DownstreamPathTemplate": "/{everything}"
     }
   ],
   "GlobalConfiguration": {

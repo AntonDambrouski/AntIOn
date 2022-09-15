@@ -18,7 +18,7 @@
                     }
                 }
 
-                <form asp-controller="Account" asp-action="ExternalRegister" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <form asp-controller="Accounts" asp-action="ExternalRegister" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <div class="form-group mb-2">
                         <label class="form-label" for="name">Name:</label>
                         <input type="text" id="name" class="form-control" placeholder="Enter your name..." asp-for="Name" />
