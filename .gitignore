@@ -406,3 +406,4 @@ IdentityServer/keys
 
 
 /Services/IdentityServer/keys
+*.env

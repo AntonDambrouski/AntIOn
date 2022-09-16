@@ -1,4 +1,5 @@
 using IdentityServer;
+using IdentityServer.Constants;
 using IdentityServer.Data;
 using IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
@@ -24,7 +25,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(setup =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddIdentityServer()
+builder.Services.AddIdentityServer(setup =>
+{
+    setup.IssuerUri = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.UrlIssuerName);
+})
     .AddAspNetIdentity<AppUser>()
     .AddInMemoryIdentityResources(Configs.GetIdentityResources())
     .AddInMemoryApiScopes(Configs.GetApiScopes())

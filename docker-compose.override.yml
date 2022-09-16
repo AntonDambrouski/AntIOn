@@ -1,24 +1,24 @@
-version: '3.4'
+version: "3.4"
 
 services:
   apigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - IdentityServerUrl=http://identityserver
+      - IdentityServerUrl=${IdentityServerUrl}
     ports:
       - "80"
 
   workoutwebapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - MongoDbConnectionString=mongodb://workoutdb:27017
+      - MongoDbConnectionString=${MongoDbConnectionString}
+      - IdentityServerUrl=${IdentityServerUrl}
     ports:
       - "80"
-
 
   identityserver:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - UrlIssuerName=${IdentityServerUrl}
     ports:
       - "80"
-

@@ -12,7 +12,7 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
     {
-        config.Authority = Environment.GetEnvironmentVariable(EnvironmentVariableNames.IdentityServerUrl);
+        config.Authority = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.IdentityServerUrl);
         config.RequireHttpsMetadata = false;
         config.TokenValidationParameters = new TokenValidationParameters
         {
@@ -27,10 +27,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
+app.Use(async (context, next) =>
+{
+    var host = context.Request.Host.ToUriComponent();
+    context.Request.QueryString = context.Request.QueryString.Add("gateway_host", host);
+    await next(context);
+});
 
 await app.UseOcelot();
 
