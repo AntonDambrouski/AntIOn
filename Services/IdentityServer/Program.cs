@@ -27,7 +27,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(setup =>
 
 builder.Services.AddIdentityServer(setup =>
 {
-    setup.IssuerUri =Environment.GetEnvironmentVariable(EnvironmentVariablesNames.UrlIssuerName);
+    setup.IssuerUri = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.UrlIssuerName);
 })
     .AddAspNetIdentity<AppUser>()
     .AddInMemoryIdentityResources(Configs.GetIdentityResources())
