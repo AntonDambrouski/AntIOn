@@ -1,21 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Api", "Workout.Api\Workout.Api.csproj", "{88A70069-55AD-4066-996F-F270CF8E81E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Api", "Workout.Api\Workout.Api.csproj", "{88A70069-55AD-4066-996F-F270CF8E81E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Core", "Workout.Core\Workout.Core.csproj", "{AD901851-9D67-4FEC-95F1-65CE44A89DDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Core", "Workout.Core\Workout.Core.csproj", "{AD901851-9D67-4FEC-95F1-65CE44A89DDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workout.Infrastructure", "Workout.Infrastructure\Workout.Infrastructure.csproj", "{EF284F86-B216-4352-80A4-180F62DD4FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workout.Infrastructure", "Workout.Infrastructure\Workout.Infrastructure.csproj", "{EF284F86-B216-4352-80A4-180F62DD4FF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE172B61-7B7D-4506-8F0D-93B9ED4CC92F}"
+	ProjectSection(SolutionItems) = preProject
+		Workout.UnitTests\Workout.UnitTests.csproj = Workout.UnitTests\Workout.UnitTests.csproj
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{88A70069-55AD-4066-996F-F270CF8E81E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +32,11 @@ Global
 		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF284F86-B216-4352-80A4-180F62DD4FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B4779BC-C60D-4079-9E00-C8CA3933BC76}
 	EndGlobalSection
 EndGlobal
