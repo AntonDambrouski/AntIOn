@@ -1,6 +1,6 @@
 ﻿namespace OcelotApiGateway.Constants;
 
-public class EnvironmentVariableNames
+public class EnvironmentVariablesNames
 {
     public const string IdentityServerUrl = "IdentityServerUrl";
 }

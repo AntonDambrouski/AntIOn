@@ -12,7 +12,7 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
     {
-        config.Authority = Environment.GetEnvironmentVariable(EnvironmentVariableNames.IdentityServerUrl);
+        config.Authority = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.IdentityServerUrl);
         config.RequireHttpsMetadata = false;
         config.TokenValidationParameters = new TokenValidationParameters
         {
