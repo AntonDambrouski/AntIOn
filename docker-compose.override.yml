@@ -12,6 +12,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - MongoDbConnectionString=mongodb://workoutdb:27017
+      - IdentityServerUrl=http://identityserver
     ports:
       - "80"
 

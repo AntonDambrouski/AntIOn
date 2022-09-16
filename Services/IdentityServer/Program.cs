@@ -24,7 +24,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(setup =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddIdentityServer()
+builder.Services.AddIdentityServer(setup =>
+{
+    setup.IssuerUri = "http://identityserver";
+})
     .AddAspNetIdentity<AppUser>()
     .AddInMemoryIdentityResources(Configs.GetIdentityResources())
     .AddInMemoryApiScopes(Configs.GetApiScopes())

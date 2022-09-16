@@ -6,6 +6,7 @@ using Workout.Core.Interfaces.Services;
 using Workout.Core.Models;
 using Workout.Core.Services;
 using Workout.Core.Validators;
+using Workout.Core.Constants;
 using Workout.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +16,9 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
 {
-    config.Authority = "https://localhost:5001";
+    config.Authority = Environment.GetEnvironmentVariable(EnvironmentVariablesNames.IdentityServerUrl);
     config.SaveToken = true;
+    config.RequireHttpsMetadata = false;
 
     config.TokenValidationParameters = new TokenValidationParameters
     {
@@ -48,7 +50,9 @@ builder.Services.AddSingleton<IUrlService>(sp =>
 {
     var accessor = sp.GetService<IHttpContextAccessor>();
     var request = accessor.HttpContext.Request;
-    var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+    var gatewayhost = request.Query["gateway_host"].ToString();
+    var host = string.IsNullOrEmpty(gatewayhost) ? request.Host.ToUriComponent() : gatewayhost;
+    var uri = string.Concat(request.Scheme, "://", host);
     return new UrlService(uri);
 });
 

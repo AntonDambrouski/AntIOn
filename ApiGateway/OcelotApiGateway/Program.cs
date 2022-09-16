@@ -27,10 +27,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
+app.Use(async (context, next) =>
+{
+    var host = context.Request.Host.ToUriComponent();
+    context.Request.QueryString = context.Request.QueryString.Add("gateway_host", host);
+    await next(context);
+});
 
 await app.UseOcelot();
 

@@ -41,4 +41,7 @@ services:
       context: .
       dockerfile: Services/IdentityServer/Dockerfile
     networks:
+      - frontend
       - backend
+    ports:
+      - 5000:80 
