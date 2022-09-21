@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  isLoggedIn = true;
+  isAuthenticated = true;
   isHandset = false;
   constructor(private responsive: BreakpointObserver) {}
 
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  onLogin() {
-    this.isLoggedIn = !this.isLoggedIn;
+  onChangeLoginState() {
+    this.isAuthenticated = !this.isAuthenticated;
   }
 }

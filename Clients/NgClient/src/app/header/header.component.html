@@ -12,7 +12,7 @@
   </div>
   <div class="filler"></div>
   <div class="toolbar-item">
-    <div *ngIf="isLoggedIn; else loggedInIcons" class="user-actions">
+    <div *ngIf="isAuthenticated; else loggedInIcons" class="user-actions">
       <button
         mat-icon-button
         matTooltip="User settings"
@@ -24,7 +24,7 @@
         mat-icon-button
         matTooltip="Sign-out"
         aria-label="Sign-out"
-        (click)="onLogin()"
+        (click)="onChangeLoginState()"
       >
         <mat-icon aria-hidden="false">exit_to_app</mat-icon>
       </button>
@@ -32,7 +32,7 @@
 
     <ng-template #loggedInIcons>
       <div class="user-actions">
-        <button mat-flat-button (click)="onLogin()">
+        <button mat-flat-button (click)="onChangeLoginState()">
           Sign-in
           <mat-icon aria-hidden="false">account_circle</mat-icon>
         </button>
