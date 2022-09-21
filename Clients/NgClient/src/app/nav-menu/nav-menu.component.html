@@ -1,0 +1,12 @@
+<mat-nav-list [ngClass]="{ 'nav-menu': displayInRow }" role="navigation">
+  <a mat-list-item [matMenuTriggerFor]="workoutMenu">Workout</a>
+  <mat-menu #workoutMenu="matMenu">
+    <mat-nav-list>
+      <a mat-list-item>Exercises</a>
+      <a mat-list-item>Sets</a>
+      <a mat-list-item>Trainings</a>
+    </mat-nav-list>
+  </mat-menu>
+  <a mat-list-item>Fitness Goals</a>
+  <a mat-list-item>Chat</a>
+</mat-nav-list>
