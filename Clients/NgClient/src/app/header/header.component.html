@@ -1,0 +1,46 @@
+<mat-toolbar>
+  <div *ngIf="isHandset" class="toolbar-item">
+    <button mat-icon-button aria-label="Menu button">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div class="toolbar-item">
+    <a>AntIOn</a>
+  </div>
+  <div *ngIf="!isHandset">
+    <app-nav-menu [displayInRow]="true"></app-nav-menu>
+  </div>
+  <div class="filler"></div>
+  <div class="toolbar-item">
+    <div *ngIf="isLoggedIn; else loggedInIcons" class="user-actions">
+      <button
+        mat-icon-button
+        matTooltip="User settings"
+        aria-label="User settings"
+      >
+        <mat-icon aria-hidden="false">settings</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        matTooltip="Sign-out"
+        aria-label="Sign-out"
+        (click)="onLogin()"
+      >
+        <mat-icon aria-hidden="false">exit_to_app</mat-icon>
+      </button>
+    </div>
+
+    <ng-template #loggedInIcons>
+      <div class="user-actions">
+        <button mat-flat-button (click)="onLogin()">
+          Sign-in
+          <mat-icon aria-hidden="false">account_circle</mat-icon>
+        </button>
+        <button mat-flat-button>
+          Sign-up
+          <mat-icon aria-hidden="false">person_add</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</mat-toolbar>
